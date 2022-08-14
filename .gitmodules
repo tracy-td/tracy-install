@@ -1,0 +1,6 @@
+[submodule "tracy-front"]
+	path = tracy-front
+	url = https://github.com/tracy-td/tracy-front.git
+[submodule "tracy-api"]
+	path = tracy-api
+	url = https://github.com/tracy-td/tracy-api.git

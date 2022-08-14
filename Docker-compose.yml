@@ -1,0 +1,44 @@
+version: '3'
+services:
+  tracy-api:
+    image: tracytdorg/tracytd-api:latest
+    container_name: tracy-api-build
+    ports:
+      - 9090:9090
+    depends_on:
+      - postgresdb
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgresdb:5432/${DB_NAME}
+      - SPRING_DATASOURCE_USERNAME=${DB_USER}
+      - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
+    restart: always
+    networks:
+      - postgres-compose-network
+  tracy-front:
+    image: tracytdorg/tracytd-front:latest
+    ports:
+      - 8443:443
+      - 8080:80    
+    container_name: tracy-front-build
+    environment:
+      - API_URL= "${URL}:9090"
+  postgresdb:
+    image: postgres:12
+    container_name: postgresdb
+    restart: always
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_tracy:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    networks:
+      - postgres-compose-network
+volumes:
+  postgres_tracy:
+networks: 
+  postgres-compose-network:
+    driver: bridge
