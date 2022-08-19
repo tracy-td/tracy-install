@@ -9,7 +9,7 @@ services:
       - postgresdb
     environment:
       - SPRING_PROFILES_ACTIVE=prod
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgresdb:5432/${DB_NAME}
+      - SPRING_DATASOURCE_URL=${DB_URL}
       - SPRING_DATASOURCE_USERNAME=${DB_USER}
       - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
     restart: always
@@ -26,6 +26,7 @@ services:
   postgresdb:
     image: postgres:12
     container_name: postgresdb
+    profiles: ["optional-postgres"]
     restart: always
     ports:
       - 5432:5432
